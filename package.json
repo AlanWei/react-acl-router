@@ -1,0 +1,34 @@
+{
+  "name": "react-acl",
+  "version": "0.1.0",
+  "description": "Access Control Module for React Applications",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rm -rf dist/ && rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlanWei/react-acl.git"
+  },
+  "author": "Alan Wei",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AlanWei/react-acl/issues"
+  },
+  "homepage": "https://github.com/AlanWei/react-acl#readme",
+  "dependencies": {
+    "lodash": "^4.17.5",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-router-dom": "^4.2.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "rollup": "^0.55.5",
+    "rollup-plugin-babel": "^3.0.3"
+  }
+}
