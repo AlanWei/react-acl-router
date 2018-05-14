@@ -2,22 +2,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import map from 'lodash/map';
-import omit from 'lodash/omit';
 import isNil from 'lodash/isNil';
-import indexOf from 'lodash/indexOf';
-
-const OMIT_ROUTE_RENDER_PROPERTIES = ['render', 'component'];
-
-const omitRouteRenderProperties = route => (
-  omit(route, OMIT_ROUTE_RENDER_PROPERTIES)
-);
+import omitRouteRenderProperties from './utils/omitRouteRenderProperties';
+import checkPermissions from './utils/checkPermissions';
+import DefaultLayout from './DefaultLayout';
+import DefaultNotFound from './DefaultNotFound';
 
 const propTypes = {
-  userRole: PropTypes.string,
+  authorities: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array,
+    PropTypes.func,
+  ]),
   authorized: PropTypes.arrayOf(PropTypes.shape({
     path: PropTypes.string,
     exact: PropTypes.bool,
-    permission: PropTypes.arrayOf(PropTypes.string),
+    permissions: PropTypes.arrayOf(PropTypes.string),
     redirect: PropTypes.string,
     component: PropTypes.func,
   })).isRequired,
@@ -29,19 +29,17 @@ const propTypes = {
     component: PropTypes.func,
   })).isRequired,
   unAuthorizedLayout: PropTypes.func,
+  notFound: PropTypes.func,
 };
 
 const defaultProps = {
-  userRole: '',
-  authorizedLayout: <div />,
-  unAuthorizedLayout: <div />,
+  authorities: '',
+  authorizedLayout: DefaultLayout,
+  unAuthorizedLayout: DefaultLayout,
+  notFound: DefaultNotFound,
 };
 
 class Router extends Component {
-  checkPermission = permission => (
-    indexOf(permission, this.props.userRole) !== -1
-  )
-
   renderRedirectRoute = route => (
     <Route
       key={route.path}
@@ -50,40 +48,51 @@ class Router extends Component {
     />
   );
 
+  /**
+   * props pass to Layout & Component are history, location, match
+   */
   renderAuthorizedRoute = (route) => {
-    const { authorizedLayout: AuthorizedLayout } = this.props;
-    const { permission, path, component: RouteComponent } = route;
-    const hasPermission = this.checkPermission(permission);
-    if (hasPermission) {
-      return (
-        <Route
-          key={path}
-          {...omitRouteRenderProperties(route)}
-          render={props => (
-            <AuthorizedLayout {...props}>
-              <RouteComponent />
-            </AuthorizedLayout>
-          )}
-        />
-      );
+    const { authorizedLayout: AuthorizedLayout, authorities } = this.props;
+    const { permissions, path, component: RouteComponent } = route;
+    const hasPermission = checkPermissions(authorities, permissions);
+
+    // redirect if there is no permission
+    if (!hasPermission) {
+      return this.renderRedirectRoute(route);
     }
-    return this.renderRedirectRoute(route);
+
+    return (
+      <Route
+        key={path}
+        {...omitRouteRenderProperties(route)}
+        render={props => (
+          <AuthorizedLayout {...props}>
+            <RouteComponent {...props} />
+          </AuthorizedLayout>
+        )}
+      />
+    );
   }
 
+  /**
+   * props pass to Layout & Component are history, location, match
+   */
   renderUnAuthorizedRoute = (route) => {
     const { unAuthorizedLayout: UnAuthorizedLayout } = this.props;
     const { redirect, path, component: RouteComponent } = route;
 
+    // check if current route is a redirect route
     if (isNil(RouteComponent) && !isNil(redirect)) {
       return this.renderRedirectRoute(route);
     }
+
     return (
       <Route
         key={path}
         {...omitRouteRenderProperties(route)}
         render={props => (
           <UnAuthorizedLayout {...props}>
-            <RouteComponent />
+            <RouteComponent {...props} />
           </UnAuthorizedLayout>
         )}
       />
@@ -91,7 +100,7 @@ class Router extends Component {
   }
 
   render() {
-    const { unAuthorized, authorized } = this.props;
+    const { unAuthorized, authorized, notFound: NotFound } = this.props;
     return (
       <Switch>
         {map(unAuthorized, route => (
@@ -100,7 +109,7 @@ class Router extends Component {
         {map(authorized, route => (
           this.renderAuthorizedRoute(route)
         ))}
-        <Route render={() => <div>404</div>} />
+        <Route render={props => <NotFound {...props} />} />
       </Switch>
     );
   }
