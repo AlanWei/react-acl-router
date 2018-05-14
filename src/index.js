@@ -1,3 +1,3 @@
-import AuthorizedRoute from './AuthorizedRoute.jsx';
+import Router from './Router.jsx';
 
-export default AuthorizedRoute;
+export default Router;

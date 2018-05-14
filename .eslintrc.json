@@ -1,0 +1,22 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import"
+  ],
+  "rules": {
+    "no-console": 0,
+    "react/forbid-prop-types": 0
+  },
+  "globals": {
+    "document": true,
+    "window": true
+  },
+  "env": {
+    "es6": true,
+    "node": true,
+    "jest": true
+  }
+}
