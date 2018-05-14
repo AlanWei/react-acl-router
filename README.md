@@ -1,2 +1,2 @@
-# react-acl
-Access Control Module for React Applications
+# react-acl-router
+Router with Access Control for React Applications
