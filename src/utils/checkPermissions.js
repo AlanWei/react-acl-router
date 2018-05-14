@@ -1,9 +1,14 @@
+import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
 import isFunction from 'lodash/isFunction';
 import indexOf from 'lodash/indexOf';
 
 const checkPermissions = (authorities, permissions) => {
+  if (isEmpty(permissions)) {
+    return true;
+  }
+
   if (isArray(authorities)) {
     let hasPermission = false;
     for (let i = 0; i < authorities.length; i += 1) {
@@ -23,7 +28,7 @@ const checkPermissions = (authorities, permissions) => {
     return authorities(permissions);
   }
 
-  return true;
+  throw new Error('[react-acl]: Unsupport type of authorities.');
 };
 
 export default checkPermissions;
