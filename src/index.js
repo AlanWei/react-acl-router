@@ -1,3 +1,3 @@
-import Router from './Router';
+import AclRouter from './AclRouter';
 
-export default Router;
+export default AclRouter;

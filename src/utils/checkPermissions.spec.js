@@ -28,5 +28,5 @@ test('function authorities', () => {
 });
 
 test('unsupport type of authorities', () => {
-  expect(() => checkPermissions(123, ['admin'])).toThrowError('[react-acl]: Unsupport type of authorities.');
+  expect(() => checkPermissions(123, ['admin'])).toThrowError('[react-acl-router]: Unsupport type of authorities.');
 });

@@ -10,14 +10,12 @@ const checkPermissions = (authorities, permissions) => {
   }
 
   if (isArray(authorities)) {
-    let hasPermission = false;
     for (let i = 0; i < authorities.length; i += 1) {
       if (indexOf(permissions, authorities[i]) !== -1) {
-        hasPermission = true;
-        break;
+        return true;
       }
     }
-    return hasPermission;
+    return false;
   }
 
   if (isString(authorities)) {
@@ -28,7 +26,7 @@ const checkPermissions = (authorities, permissions) => {
     return authorities(permissions);
   }
 
-  throw new Error('[react-acl]: Unsupport type of authorities.');
+  throw new Error('[react-acl-router]: Unsupport type of authorities.');
 };
 
 export default checkPermissions;

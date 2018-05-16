@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlanWei/react-acl.git"
+    "url": "git+https://github.com/AlanWei/react-acl-router.git"
   },
   "author": "Alan Wei",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AlanWei/react-acl/issues"
+    "url": "https://github.com/AlanWei/react-acl-router/issues"
   },
-  "homepage": "https://github.com/AlanWei/react-acl#readme",
+  "homepage": "https://github.com/AlanWei/react-acl-router#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",

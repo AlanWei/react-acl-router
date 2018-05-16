@@ -14,32 +14,50 @@ const propTypes = {
     PropTypes.array,
     PropTypes.func,
   ]),
-  authorized: PropTypes.arrayOf(PropTypes.shape({
+  normalRoutes: PropTypes.arrayOf(PropTypes.shape({
     path: PropTypes.string,
-    exact: PropTypes.bool,
+    redirect: PropTypes.string,
+    component: PropTypes.func,
+  })),
+  normalLayout: PropTypes.func,
+  authorizedRoutes: PropTypes.arrayOf(PropTypes.shape({
+    path: PropTypes.string,
     permissions: PropTypes.arrayOf(PropTypes.string),
     redirect: PropTypes.string,
     component: PropTypes.func,
-  })).isRequired,
+  })),
   authorizedLayout: PropTypes.func,
-  unAuthorized: PropTypes.arrayOf(PropTypes.shape({
-    path: PropTypes.string,
-    exact: PropTypes.bool,
-    redirect: PropTypes.string,
-    component: PropTypes.func,
-  })).isRequired,
-  unAuthorizedLayout: PropTypes.func,
   notFound: PropTypes.func,
 };
 
 const defaultProps = {
   authorities: '',
+  normalRoutes: [],
+  normalLayout: DefaultLayout,
+  authorizedRoutes: [],
   authorizedLayout: DefaultLayout,
-  unAuthorizedLayout: DefaultLayout,
   notFound: DefaultNotFound,
 };
 
-class Router extends Component {
+class AclRouter extends Component {
+  static getDerivedStateFromProps(nextProps) {
+    return {
+      authorities: nextProps.authorities,
+    };
+  }
+
+  state = {
+    authorities: this.props.authorities,
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (this.props.authorities !== prevProps.authorities) {
+      this.setState({
+        authorities: this.props.authorities,
+      });
+    }
+  }
+
   renderRedirectRoute = route => (
     <Route
       key={route.path}
@@ -52,7 +70,8 @@ class Router extends Component {
    * props pass to Layout & Component are history, location, match
    */
   renderAuthorizedRoute = (route) => {
-    const { authorizedLayout: AuthorizedLayout, authorities } = this.props;
+    const { authorizedLayout: AuthorizedLayout } = this.props;
+    const { authorities } = this.state;
     const { permissions, path, component: RouteComponent } = route;
     const hasPermission = checkPermissions(authorities, permissions);
 
@@ -78,10 +97,10 @@ class Router extends Component {
    * props pass to Layout & Component are history, location, match
    */
   renderUnAuthorizedRoute = (route) => {
-    const { unAuthorizedLayout: UnAuthorizedLayout } = this.props;
+    const { normalLayout: NormalLayout } = this.props;
     const { redirect, path, component: RouteComponent } = route;
 
-    // check if current route is a redirect route
+    // check if current route is a redirect route (doesn't have component but redirect path)
     if (isNil(RouteComponent) && !isNil(redirect)) {
       return this.renderRedirectRoute(route);
     }
@@ -91,30 +110,41 @@ class Router extends Component {
         key={path}
         {...omitRouteRenderProperties(route)}
         render={props => (
-          <UnAuthorizedLayout {...props}>
+          <NormalLayout {...props}>
             <RouteComponent {...props} />
-          </UnAuthorizedLayout>
+          </NormalLayout>
+        )}
+      />
+    );
+  }
+
+  renderNotFoundRoute = () => {
+    const { notFound: NotFound } = this.props;
+    return (
+      <Route
+        render={props => (
+          <NotFound {...props} />
         )}
       />
     );
   }
 
   render() {
-    const { unAuthorized, authorized, notFound: NotFound } = this.props;
+    const { normalRoutes, authorizedRoutes } = this.props;
     return (
       <Switch>
-        {map(unAuthorized, route => (
+        {map(normalRoutes, route => (
           this.renderUnAuthorizedRoute(route)
         ))}
-        {map(authorized, route => (
+        {map(authorizedRoutes, route => (
           this.renderAuthorizedRoute(route)
         ))}
-        <Route render={props => <NotFound {...props} />} />
+        {this.renderNotFoundRoute()}
       </Switch>
     );
   }
 }
 
-Router.propTypes = propTypes;
-Router.defaultProps = defaultProps;
-export default Router;
+AclRouter.propTypes = propTypes;
+AclRouter.defaultProps = defaultProps;
+export default AclRouter;
