@@ -3,7 +3,7 @@
 [![npm v](https://img.shields.io/npm/v/react-acl-router.svg)](https://www.npmjs.com/package/react-acl-router)
 [![npm dm](https://img.shields.io/npm/dm/react-acl-router.svg)](https://www.npmjs.com/package/react-acl-router)
 
-Router with Access Control for React Applications
+Router with Access Control for React Applications.
 
 ## Installation
 
@@ -109,16 +109,20 @@ const BasicLayoutWrapper = props => (
   </BasicLayout>
 );
 
-<AclRouter
-  // sync user authorities with the user data in your application
-  authorities={this.props.app.user.authorities}
-  authorizedRoutes={authorizedRoutes}
-  authorizedLayout={BasicLayoutWrapper}
-  normalRoutes={normalRoutes}
-  normalLayout={NormalLayout}
-  notFound={() => <div>Page Not Found</div>}
-/>
+const Router = () => (
+  <AclRouter
+    // sync user authorities with the user data in your application
+    authorities={this.props.app.user.authorities}
+    authorizedRoutes={authorizedRoutes}
+    authorizedLayout={BasicLayoutWrapper}
+    normalRoutes={normalRoutes}
+    normalLayout={NormalLayout}
+    notFound={() => <div>Page Not Found</div>}
+  />
+);
+
+export default Router;
 ```
 
 ## Notes
-* For normal route, `redirect` and `component` are exclusive since normally you won't redirect the user to another path while you have a valid component to render.
+* For normal route, `redirect` and `component` are exclusive since normally you won't redirect user to another path while you have a valid component to render.

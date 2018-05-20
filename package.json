@@ -1,7 +1,7 @@
 {
   "name": "react-acl-router",
   "version": "0.2.0",
-  "description": "Router with Access Control for React Applications",
+  "description": "Router with Access Control for React Applications.",
   "main": "lib/index.js",
   "scripts": {
     "build": "npm run clean && cross-env NODE_ENV=production babel src --out-dir lib",
