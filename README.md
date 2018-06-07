@@ -26,12 +26,13 @@ yarn add react-acl-router react react-router-dom lodash
 ### AuthorizedRoute
 with all react-router `<Route />` supported props except `render` because `react-acl-router` will overwrite the `render` prop.
 
-| Property    | Description                                                 | Type            | Default  |
-| ----------- | ----------------------------------------------------------- | --------------- | -------- |
-| path        | route's full path                                           | string          | -        |
-| permissions | array of roles which have permission like ['god', 'admin' ] | arrayOf(string) | -        |
-| redirect    | redirect path if authorities don't have permission          | string          | -        |
-| component   | route's component                                           | function        | -        |
+| Property     | Description                                                      | Type            | Default  |
+| ------------ | ---------------------------------------------------------------- | --------------- | -------- |
+| path         | route's full path                                                | string          | -        |
+| permissions  | array of roles which have permission like ['god', 'admin' ]      | arrayOf(string) | -        |
+| component    | route's component                                                | function        | -        |
+| unauthorized | unauthorized view component if authorities don't have permission | string          | -        |
+| redirect     | redirect path if authorities don't have permission               | string          | -        |
 
 ### NormalRoute (with react-router Route's all supported props)
 with all react-router `<Route />` supported props except `render` because `react-acl-router` will overwrite the `render` prop.
@@ -45,47 +46,36 @@ with all react-router `<Route />` supported props except `render` because `react
 ## Example
 ```javascript
 import AclRouter from 'react-acl-router';
+import BasicLayout from 'layouts/BasicLayout';
 import NormalLayout from 'layouts/NormalLayout';
 import Login from 'views/login';
-import Home from 'views/home';
-import Analysis from 'views/analysis';
+import WorkInProgress from 'views/workInProgress';
+import Unauthorized from 'views/unauthorized';
 
 const authorizedRoutes = [{
   path: '/dashboard/analysis/realtime',
   exact: true,
   permissions: ['admin', 'user'],
   redirect: '/login',
-  component: Analysis,
+  component: WorkInProgress,
 }, {
   path: '/dashboard/analysis/offline',
   exact: true,
   permissions: ['admin', 'user'],
   redirect: '/login',
-  component: Analysis,
-}, {
-  path: '/dashboard/monitor',
-  exact: true,
-  permissions: ['admin', 'user'],
-  redirect: '/login',
-  component: Analysis,
+  component: WorkInProgress,
 }, {
   path: '/dashboard/workplace',
   exact: true,
   permissions: ['admin', 'user'],
   redirect: '/login',
-  component: Analysis,
+  component: WorkInProgress,
 }, {
-  path: '/marketing',
+  path: '/exception/403',
   exact: true,
-  permissions: ['admin', 'user'],
-  redirect: '/login',
-  component: Home,
-}, {
-  path: '/settings/users',
-  exact: true,
-  permissions: ['admin', 'user'],
-  redirect: '/login',
-  component: Home,
+  permissions: ['god'],
+  component: WorkInProgress,
+  unauthorized: Unauthorized,
 }];
 
 const normalRoutes = [{
@@ -98,24 +88,13 @@ const normalRoutes = [{
   component: Login,
 }];
 
-// passing extra props to layout via HOC
-const BasicLayoutWrapper = props => (
-  <BasicLayout
-    {...props}
-    appName={appName}
-    menuData={menuData}
-  >
-    {props.children}
-  </BasicLayout>
-);
-
-const Router = () => (
+const Router = (props) => (
   <AclRouter
     // sync user authorities with the user data in your application
-    authorities={this.props.app.user.authorities}
+    authorities={props.user.authorities}
     authorizedRoutes={authorizedRoutes}
-    authorizedLayout={BasicLayoutWrapper}
-    normalRoutes={normalRoutes}
+    authorizedLayout={BasicLayout}
+    normalRoutes={unAuthorizedRoutes}
     normalLayout={NormalLayout}
     notFound={() => <div>Page Not Found</div>}
   />
@@ -125,4 +104,4 @@ export default Router;
 ```
 
 ## Notes
-* For normal route, `redirect` and `component` are exclusive since normally you won't redirect user to another path while you have a valid component to render.
+* For normal route, `redirect` or `unauthorized` and `component` are exclusive since normally you won't redirect user to another path while you have a valid component to render.

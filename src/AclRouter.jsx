@@ -23,8 +23,9 @@ const propTypes = {
   authorizedRoutes: PropTypes.arrayOf(PropTypes.shape({
     path: PropTypes.string,
     permissions: PropTypes.arrayOf(PropTypes.string),
-    redirect: PropTypes.string,
     component: PropTypes.func,
+    redirect: PropTypes.string,
+    unauthorized: PropTypes.func,
   })),
   authorizedLayout: PropTypes.func,
   notFound: PropTypes.func,
