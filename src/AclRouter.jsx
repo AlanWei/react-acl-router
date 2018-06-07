@@ -40,22 +40,17 @@ const defaultProps = {
 };
 
 class AclRouter extends Component {
-  static getDerivedStateFromProps(nextProps) {
-    return {
-      authorities: nextProps.authorities,
-    };
-  }
-
   state = {
     authorities: this.props.authorities,
   }
 
-  componentDidUpdate = (prevProps) => {
-    if (this.props.authorities !== prevProps.authorities) {
-      this.setState({
-        authorities: this.props.authorities,
-      });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.authorities !== prevState.authorities) {
+      return {
+        authorities: nextProps.authorities,
+      };
     }
+    return null;
   }
 
   renderRedirectRoute = route => (
@@ -72,11 +67,29 @@ class AclRouter extends Component {
   renderAuthorizedRoute = (route) => {
     const { authorizedLayout: AuthorizedLayout } = this.props;
     const { authorities } = this.state;
-    const { permissions, path, component: RouteComponent } = route;
+    const {
+      permissions,
+      path,
+      component: RouteComponent,
+      unauthorized: Unauthorized,
+    } = route;
     const hasPermission = checkPermissions(authorities, permissions);
 
-    // redirect if there is no permission
-    if (!hasPermission) {
+    if (!hasPermission && route.unauthorized) {
+      return (
+        <Route
+          key={path}
+          {...omitRouteRenderProperties(route)}
+          render={props => (
+            <AuthorizedLayout {...props}>
+              <Unauthorized {...props} />
+            </AuthorizedLayout>
+          )}
+        />
+      );
+    }
+
+    if (!hasPermission && route.redirect) {
       return this.renderRedirectRoute(route);
     }
 
