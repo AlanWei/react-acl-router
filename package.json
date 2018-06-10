@@ -35,7 +35,7 @@
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.9.1",
-    "jest": "^22.4.3",
+    "jest": "^23.1.0",
     "react-test-renderer": "^16.4.0",
     "sass": "^1.5.1"
   },
