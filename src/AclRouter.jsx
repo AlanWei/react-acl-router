@@ -41,19 +41,6 @@ const defaultProps = {
 };
 
 class AclRouter extends Component {
-  state = {
-    authorities: this.props.authorities,
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.authorities !== prevState.authorities) {
-      return {
-        authorities: nextProps.authorities,
-      };
-    }
-    return null;
-  }
-
   renderRedirectRoute = route => (
     <Route
       key={route.path}
@@ -66,8 +53,7 @@ class AclRouter extends Component {
    * props pass to Layout & Component are history, location, match
    */
   renderAuthorizedRoute = (route) => {
-    const { authorizedLayout: AuthorizedLayout } = this.props;
-    const { authorities } = this.state;
+    const { authorizedLayout: AuthorizedLayout, authorities } = this.props;
     const {
       permissions,
       path,
