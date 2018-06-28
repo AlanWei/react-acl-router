@@ -139,8 +139,6 @@ class AclRouter extends Component {
       authorities,
     };
 
-    debugger;
-
     return (
       <AclRouterContext.Provider value={contentValue}>
         <Switch>
