@@ -30,7 +30,7 @@ const AclRouterLink = props => (
       if (shouldLinkBeRendered(context, props.to)) {
         return <Link {...props} />;
       }
-        return <span />;
+        return null;
     }}
   </AclRouterContext.Consumer>
 );
