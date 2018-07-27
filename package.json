@@ -1,6 +1,6 @@
 {
   "name": "@mknet/react-acl-router",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Router with Access Control for React Applications.",
   "main": "lib/index.js",
   "scripts": {
