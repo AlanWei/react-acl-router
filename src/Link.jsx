@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { intersection } from 'lodash';
 import AclRouterContext from './AclRouterContext';
 
@@ -29,7 +29,7 @@ const AclRouterLink = props => (
   <AclRouterContext.Consumer>
     {(context) => {
       if (shouldLinkBeRendered(context, props.to)) {
-        return <Link {...props} />;
+        return props.nav ? <NavLink {...props} /> : <Link {...props} />;
       }
         return null;
     }}
@@ -38,6 +38,11 @@ const AclRouterLink = props => (
 
 AclRouterLink.propTypes = {
   to: PropTypes.string.isRequired,
+  nav: PropTypes.bool,
+};
+
+AclRouterLink.defaultProps = {
+  nav: false,
 };
 
 export default AclRouterLink;
