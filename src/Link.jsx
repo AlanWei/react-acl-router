@@ -8,9 +8,9 @@ function shouldLinkBeRendered(context, to) {
   let foundRoute = normalRoutes.find((route) => {
     if (route.exact) {
       return route.path === to;
-    } else {
-      return route.path.includes(to);
     }
+      return route.path.includes(to);
+
   });
   if (foundRoute) {
     return true;
@@ -18,19 +18,22 @@ function shouldLinkBeRendered(context, to) {
   foundRoute = authorizedRoutes.find((route) => {
     if (route.exact) {
       return route.path === to;
-    } else {
-      return route.path.includes(to);
     }
+      return route.path.includes(to);
+
   });
   const roleHits = intersection(foundRoute.permissions, authorities);
   return (roleHits.length > 0);
 }
 
-const AclRouterLink = (props) => (
+const AclRouterLink = props => (
   <AclRouterContext.Consumer>
     {(context) => {
-      if (shouldLinkBeRendered(context, props.to))
-      return <Link {...props} />;
+      if (shouldLinkBeRendered(context, props.to)) {
+        return <Link {...props} />;
+      }
+        return <span></span>;
+
     }}
   </AclRouterContext.Consumer>
 );
