@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { intersection } from 'lodash';
 import AclRouterContext from './AclRouterContext';
@@ -34,5 +35,9 @@ const AclRouterLink = props => (
     }}
   </AclRouterContext.Consumer>
 );
+
+AclRouterLink.propTypes = {
+  to: PropTypes.string.isRequired,
+};
 
 export default AclRouterLink;
