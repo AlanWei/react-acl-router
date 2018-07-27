@@ -1,7 +1,7 @@
 import React from 'react';
-import AclRouterContext from './AclRouterContext';
 import { Link } from 'react-router-dom';
 import { intersection } from 'lodash';
+import AclRouterContext from './AclRouterContext';
 
 function shouldLinkBeRendered(context, to) {
   const { authorities, authorizedRoutes, normalRoutes } = context;
