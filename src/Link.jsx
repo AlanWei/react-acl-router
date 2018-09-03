@@ -28,8 +28,9 @@ function shouldLinkBeRendered(context, to) {
 const AclRouterLink = props => (
   <AclRouterContext.Consumer>
     {(context) => {
+      const reducedProps = { ...props, nav: undefined };
       if (shouldLinkBeRendered(context, props.to)) {
-        return props.nav ? <NavLink {...props} /> : <Link {...props} />;
+        return props.nav ? <NavLink {...reducedProps} /> : <Link {...reducedProps} />;
       }
         return null;
     }}
