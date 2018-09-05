@@ -7,6 +7,7 @@ import omitRouteRenderProperties from './utils/omitRouteRenderProperties';
 import checkPermissions from './utils/checkPermissions';
 import DefaultLayout from './DefaultLayout';
 import DefaultNotFound from './DefaultNotFound';
+import AclRouterContext from './AclRouterContext';
 
 const propTypes = {
   authorities: PropTypes.oneOfType([
@@ -130,17 +131,26 @@ class AclRouter extends Component {
   }
 
   render() {
-    const { normalRoutes, authorizedRoutes } = this.props;
+    const { normalRoutes, authorizedRoutes, authorities } = this.props;
+
+    const contentValue = {
+      authorizedRoutes,
+      normalRoutes,
+      authorities,
+    };
+
     return (
-      <Switch>
-        {map(normalRoutes, route => (
-          this.renderUnAuthorizedRoute(route)
-        ))}
-        {map(authorizedRoutes, route => (
-          this.renderAuthorizedRoute(route)
-        ))}
-        {this.renderNotFoundRoute()}
-      </Switch>
+      <AclRouterContext.Provider value={contentValue}>
+        <Switch>
+          {map(normalRoutes, route => (
+            this.renderUnAuthorizedRoute(route)
+          ))}
+          {map(authorizedRoutes, route => (
+            this.renderAuthorizedRoute(route)
+          ))}
+          {this.renderNotFoundRoute()}
+        </Switch>
+      </AclRouterContext.Provider>
     );
   }
 }
