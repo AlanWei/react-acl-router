@@ -1,15 +1,16 @@
 {
   "parser": "babel-eslint",
-  "extends": "airbnb",
-  "plugins": [
-    "react",
-    "jsx-a11y",
-    "import"
-  ],
+  "extends": ["airbnb", "plugin:prettier/recommended"],
+  "plugins": ["react", "jsx-a11y", "import", "prettier"],
   "rules": {
-    "no-console": 0,
-    "react/forbid-prop-types": 0,
-    "react/prop-types": [2, { "ignore": ["children"] }]
+    "react/jsx-props-no-spreading": [
+      "off",
+      {
+        "custom": "ignore",
+        "html": "ignore"
+      }
+    ],
+    "prettier/prettier": "error"
   },
   "globals": {
     "document": true,

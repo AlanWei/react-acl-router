@@ -1,7 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const DefaultLayout = props => (
-  <div>{props.children}</div>
-);
+const DefaultLayout = ({ children }) => <>{children}</>;
+
+DefaultLayout.propTypes = {
+  children: PropTypes.element,
+};
+
+DefaultLayout.defaultProps = {
+  children: <></>,
+};
 
 export default DefaultLayout;

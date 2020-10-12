@@ -21,30 +21,32 @@
   },
   "homepage": "https://github.com/AlanWei/react-acl-router#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.3",
-    "babel-jest": "^23.0.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "cross-env": "^5.1.6",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.9.1",
-    "jest": "^23.1.0",
-    "react-test-renderer": "^16.4.0",
-    "sass": "^1.5.1"
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-react": "^7.10.4",
+    "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^7.10.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.3",
+    "jest": "^26.5.2",
+    "prettier": "^2.1.2"
   },
   "peerDependencies": {
-    "lodash": "^4.17.10",
-    "react": "^16.4.0",
-    "react-router-dom": "^4.3.1"
+    "lodash": "^4.17.20",
+    "react": "^16.13.1",
+    "react-router-dom": "^5.2.0"
   },
   "dependencies": {
-    "prop-types": "^15.6.1"
+    "lodash": "^4.17.20",
+    "prop-types": "^15.6.1",
+    "react": "^16.13.1",
+    "react-router-dom": "^5.2.0"
   }
 }

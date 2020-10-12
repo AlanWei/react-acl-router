@@ -1,18 +1,10 @@
 {
   "sourceMaps": true,
-  "presets": [
-    "env",
-    "react"
-  ],
-  "plugins": [
-    "transform-class-properties",
-    "transform-object-rest-spread"
-  ],
+  "presets": ["@babel/env", "@babel/react"],
+  "plugins": ["@babel/plugin-proposal-class-properties"],
   "env": {
     "production": {
-      "ignore": [
-        "**/*.spec.js"
-      ]
+      "ignore": ["**/*.spec.js"]
     }
   }
 }

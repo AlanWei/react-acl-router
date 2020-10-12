@@ -22,11 +22,16 @@ test('string authorities', () => {
 });
 
 test('function authorities', () => {
-  expect(checkPermissions(permissions => (
-    indexOf(permissions, 'admin') !== -1
-  ), ['admin', 'user'])).toEqual(true);
+  expect(
+    checkPermissions((permissions) => indexOf(permissions, 'admin') !== -1, [
+      'admin',
+      'user',
+    ]),
+  ).toEqual(true);
 });
 
 test('unsupport type of authorities', () => {
-  expect(() => checkPermissions(123, ['admin'])).toThrowError('[react-acl-router]: Unsupport type of authorities.');
+  expect(() => checkPermissions(123, ['admin'])).toThrowError(
+    '[react-acl-router]: Unsupport type of authorities.',
+  );
 });

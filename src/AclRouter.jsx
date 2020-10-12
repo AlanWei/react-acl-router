@@ -14,19 +14,23 @@ const propTypes = {
     PropTypes.array,
     PropTypes.func,
   ]),
-  normalRoutes: PropTypes.arrayOf(PropTypes.shape({
-    path: PropTypes.string,
-    redirect: PropTypes.string,
-    component: PropTypes.func,
-  })),
+  normalRoutes: PropTypes.arrayOf(
+    PropTypes.shape({
+      path: PropTypes.string,
+      redirect: PropTypes.string,
+      component: PropTypes.func,
+    }),
+  ),
   normalLayout: PropTypes.func,
-  authorizedRoutes: PropTypes.arrayOf(PropTypes.shape({
-    path: PropTypes.string,
-    permissions: PropTypes.arrayOf(PropTypes.string),
-    component: PropTypes.func,
-    redirect: PropTypes.string,
-    unauthorized: PropTypes.func,
-  })),
+  authorizedRoutes: PropTypes.arrayOf(
+    PropTypes.shape({
+      path: PropTypes.string,
+      permissions: PropTypes.arrayOf(PropTypes.string),
+      component: PropTypes.func,
+      redirect: PropTypes.string,
+      unauthorized: PropTypes.func,
+    }),
+  ),
   authorizedLayout: PropTypes.func,
   notFound: PropTypes.func,
 };
@@ -41,7 +45,7 @@ const defaultProps = {
 };
 
 class AclRouter extends Component {
-  renderRedirectRoute = route => (
+  renderRedirectRoute = (route) => (
     <Route
       key={route.path}
       {...omitRouteRenderProperties(route)}
@@ -60,6 +64,7 @@ class AclRouter extends Component {
       component: RouteComponent,
       unauthorized: Unauthorized,
     } = route;
+
     const hasPermission = checkPermissions(authorities, permissions);
 
     if (!hasPermission && route.unauthorized) {
@@ -67,7 +72,7 @@ class AclRouter extends Component {
         <Route
           key={path}
           {...omitRouteRenderProperties(route)}
-          render={props => (
+          render={(props) => (
             <AuthorizedLayout {...props}>
               <Unauthorized {...props} />
             </AuthorizedLayout>
@@ -84,14 +89,14 @@ class AclRouter extends Component {
       <Route
         key={path}
         {...omitRouteRenderProperties(route)}
-        render={props => (
+        render={(props) => (
           <AuthorizedLayout {...props}>
             <RouteComponent {...props} />
           </AuthorizedLayout>
         )}
       />
     );
-  }
+  };
 
   /**
    * props pass to Layout & Component are history, location, match
@@ -109,36 +114,26 @@ class AclRouter extends Component {
       <Route
         key={path}
         {...omitRouteRenderProperties(route)}
-        render={props => (
+        render={(props) => (
           <NormalLayout {...props}>
             <RouteComponent {...props} />
           </NormalLayout>
         )}
       />
     );
-  }
+  };
 
   renderNotFoundRoute = () => {
     const { notFound: NotFound } = this.props;
-    return (
-      <Route
-        render={props => (
-          <NotFound {...props} />
-        )}
-      />
-    );
-  }
+    return <Route render={(props) => <NotFound {...props} />} />;
+  };
 
   render() {
     const { normalRoutes, authorizedRoutes } = this.props;
     return (
       <Switch>
-        {map(normalRoutes, route => (
-          this.renderUnAuthorizedRoute(route)
-        ))}
-        {map(authorizedRoutes, route => (
-          this.renderAuthorizedRoute(route)
-        ))}
+        {map(normalRoutes, (route) => this.renderUnAuthorizedRoute(route))}
+        {map(authorizedRoutes, (route) => this.renderAuthorizedRoute(route))}
         {this.renderNotFoundRoute()}
       </Switch>
     );
