@@ -1,6 +1,6 @@
 {
   "name": "react-acl-router",
-  "version": "0.2.5",
+  "version": "1.0.0",
   "description": "Router with Access Control for React Applications.",
   "main": "lib/index.js",
   "scripts": {
